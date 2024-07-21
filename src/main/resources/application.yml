@@ -1,0 +1,40 @@
+spring:
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+    hibernate:
+      ddl-auto: validate
+  shardingsphere:
+    datasource:
+      names: sub1, sub2, sub3
+      sub1:
+        type: com.zaxxer.hikari.HikariDataSource
+        jdbc-url: ENC(Sb5byr83Rr1OgsIIlKpBSjS22tUAWmVB28kLeEsXrI9ugZLGjBpmUuyVeXn//I2cr4pr7D95dPQ=)
+        username: ENC(6hGyqnUk6v8YieJs7CPm/g==)
+        password: ENC(6hGyqnUk6v8YieJs7CPm/g==)
+      sub2:
+        type: com.zaxxer.hikari.HikariDataSource
+        jdbc-url: ENC(tvLQWaJJ2wEQ/5hRMS1wgP3YRAtxbQnWVWrv6B9R4KN1YwBJUgoITy71xzUNAzzm4EC26761UJw=)
+        username: ENC(6hGyqnUk6v8YieJs7CPm/g==)
+        password: ENC(6hGyqnUk6v8YieJs7CPm/g==)
+      sub3:
+        type: com.zaxxer.hikari.HikariDataSource
+        jdbc-url: ENC(tJ/5OQf749QV0vWDjtJM3x/jEFqWTNFXVrP2P96Zqp5vDKKwnpXW4LtL/NJ+Jgv/PXKbPP+H374=)
+        username: ENC(6hGyqnUk6v8YieJs7CPm/g==)
+        password: ENC(6hGyqnUk6v8YieJs7CPm/g==)
+    sharding:
+      default-database-strategy:
+        inline:
+          sharding-column: id
+          algorithm-expression: sub$->{id%3+1}
+      t_board:
+        actual-data-nodes: sub$->{1..3}.t_board
+        key-generator-column-name: id
+    props:
+      sql:
+        show: true
+
+jasypt:
+  encryptor:
+    bean: jasyptEncryptor
